@@ -6,56 +6,90 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/03 04:00:01 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/06 23:57:15 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int dad_stuff(char **argv, int* pipe1)
+char	*fd_read(int fd)
 {
+	char	*to_return;
+	char	*line;
+	char	*old;
 
-    char *part;
-    char *whole;
-   
-    wait(NULL);
-    close(pipe1[1]);
-
-    whole =ft_calloc(1,1);    
-    while (part != NULL){
-        part = get_next_line(pipe1[0]);
-        if (part != NULL)
-            whole =ft_strjoin(whole,part);
-    }
-    
-    ft_printf("%s", whole, argv[1]);
-    return (0 );
-     
+	to_return = (char *)ft_calloc(1,1);
+	if (to_return == 0)
+		return (0);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		old = to_return;
+		to_return = ft_strjoin(to_return, line);
+		if (to_return == 0)
+			return (free(old),free(line), NULL);
+		free(old);
+		free(line);
+		line = get_next_line(fd);
+		if (line == 0)
+			return (0);
+	}
+	return (to_return);
 }
 
-int kid_stuff(char **argv, int* pipe1)
+//pipein and out are from the POV of the child so these are reversed
+void	dad_stuff(char **holdout, int *pipein, int *pipeout)
 {
-    close(pipe1[0]);
-  
-    dup2(pipe1[1], STDOUT_FILENO);
-    close(pipe1[0]);
-    execve("$PATH/cat",argv,NULL);
-    return (0);    
+
+	close(pipein[0]);
+	close(pipeout[1]);
+	write(pipein[1], *holdout, ft_strlen(*holdout));
+	close(pipein[1]);
+	free(*holdout);
+	wait(NULL);
+	*holdout = fd_read(pipeout[0]);
+	close(pipeout[0]);
 }
 
-int main(int argc, char **argv)
+void kid_stuff(char *command, int *pipein, int *pipeout, char **envp)
 {
-    int id;
-    int pipe1[2];
+	close(pipein[1]);
+	close(pipeout[0]);
+	dup2(pipein[0],STDIN_FILENO);
+	dup2(pipeout[1], STDOUT_FILENO);
+	close(pipein[0]);
+	close(pipeout[0]);
+	ft_execchar(command,envp);
+	return ;    
+}
 
-    if (pipe(pipe1) == -1)
-        return(ft_printf("Error\n"), 0);
-    id = fork();
-    if (id == -1)
-        return(ft_printf("Error\n"), 0);
-    if (id != 0)
-        dad_stuff(argv, pipe1);
-    else
-        kid_stuff(argv, pipe1);
-    return (0 * argc);
+char	*ft_read_file(char *path)
+{
+	int		fd;
+	char	*to_return;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	to_return = fd_read(fd);
+	close(fd);
+	return (to_return);
+}
+
+
+int	main(int argc, char **argv, char**envp)
+{
+	int		id;
+	int		pipein[2];
+	int		pipeout[2];
+	char	*holdout;
+
+	if (argc < 5)
+		return (1);
+	holdout = ft_read_file(argv[1]);
+	id = fork();
+	if (id == 0)
+		kid_stuff(argv[2], pipein, pipeout, envp);
+	else
+		dad_stuff(&holdout, pipein, pipeout);
 }
