@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:37:04 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/06 23:54:52 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/07 16:16:26 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*find_path2(char *command, char **envpaths)
 	ct = 0;
 	while (envpaths[ct] != NULL)
 	{
-		path = ft_strjoin(envpaths[ct],"/");
+		path = ft_strjoin(envpaths[ct], "/");
 		if (path == 0)
 			exit (2);
 		temp = path;
@@ -39,9 +39,9 @@ char	*find_path2(char *command, char **envpaths)
 char	*separate_program_name(char *command)
 {
 	if (ft_strchr(command, ' ') != 0)
-		command = ft_substr(command, 0 ,ft_strchr(command, ' ') - command);
+		command = ft_substr(command, 0, ft_strchr(command, ' ') - command);
 	else
-		command = ft_substr(command, 0 ,ft_strlen(command));
+		command = ft_substr(command, 0, ft_strlen(command));
 	return (command);
 }
 
@@ -69,8 +69,8 @@ char	*find_path(char *command, char **envp)
 		;
 	if (envp[c] == NULL)
 		exit (1);
-	temp = ft_split(envp[c],'=');
-	envpaths = ft_split(temp[1],':');
+	temp = ft_split(envp[c], '=');
+	envpaths = ft_split(temp[1], ':');
 	ft_free_split(temp);
 	return (find_path2(command, envpaths));
 }

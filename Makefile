@@ -6,7 +6,7 @@
 #    By: amejia <amejia@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 14:12:43 by amejia            #+#    #+#              #
-#    Updated: 2023/03/06 23:22:19 by amejia           ###   ########.fr        #
+#    Updated: 2023/03/07 16:08:29 by amejia           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,14 @@ CFLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 
+clean: 
+	rm -f $(OBJS)
+	make -C libft clean
+
+fclean: clean
+	rm -f $(NAME) $(NAME_DEBUG)
+	make -C libft fclean
+
 VS_debug: CFLAGS += -D DEBUG=1
 VS_debug: $(NAME_DEBUG)
 
@@ -34,15 +42,6 @@ $(NAME_DEBUG): libft/libft.a $(SRCS)
 libft/libft.a:
 	make -C libft
 
-clean: 
-	rm -f $(OBJS)
-	make -C libft clean
-
-fclean: clean
-	rm -f $(NAME) $(NAME_DEBUG)
-	make -C libft fclean
-
 re: fclean all
 
-
-.PHONY: all clean fclean re debug VS_debug 
+.PHONY: all clean fclean re VS_debug 
