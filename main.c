@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/07 16:16:57 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/07 17:15:17 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	main(int argc, char **argv, char**envp)
 	if (argc < 5)
 		return (1);
 	holdout = ft_read_file(argv[1]);
+	if (holdout == 0)
+		return (2);
 	ct = 2;
 	while (ct < argc -1)
 	{
@@ -96,7 +98,7 @@ int	main(int argc, char **argv, char**envp)
 			dad_stuff(&holdout, pipein, pipeout);
 		ct++;
 	}
-	ct = open(argv[ct], O_WRONLY | O_CREAT, 0644);
+	ct = open(argv[ct], O_WRONLY | O_CREAT | O_TRUNC , 0644);
 	write(ct, holdout, ft_strlen(holdout));
 	close(ct);
 	return (0);
