@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:37:04 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/07 16:16:26 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/08 22:21:35 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	**argv_generator(char *command)
 	return (to_return);
 }
 
-void	ft_execchar(char *command, char **envp)
+int	ft_execchar(char *command, char **envp)
 {
 	char	*path_to_exec;
 	char	**new_argv;
@@ -104,5 +104,6 @@ void	ft_execchar(char *command, char **envp)
 	path_to_exec = find_path(command, envp);
 	new_argv = argv_generator(command);
 	if (execve(path_to_exec, new_argv, envp) == -1)
-		exit(2);
+		return(127);
+	return (0);
 }
