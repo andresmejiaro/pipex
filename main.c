@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/08 22:25:52 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/13 14:03:21 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,10 @@ int	main(int argc, char **argv, char**envp)
 	int		ct;
 	int 	a;
 	int b;
+
+	//char **test = argv_generator("esto es una prueba 'para ver como' funciona 'esta manda'");
+
+	
 
 	if (argc < 5)
 		return (1);
