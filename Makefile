@@ -6,7 +6,7 @@
 #    By: amejia <amejia@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 14:12:43 by amejia            #+#    #+#              #
-#    Updated: 2023/03/08 17:12:19 by amejia           ###   ########.fr        #
+#    Updated: 2023/03/13 17:23:34 by amejia           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 NAME_DEBUG = pipex_debug
 
-SRCS = ft_execchar.c main.c
+SRCS = ft_execchar.c main.c argv_generator.c
 
 OBJS = ${SRCS:.c=.o}
 
