@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:00 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/13 17:23:19 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/14 19:01:18 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 int 	ft_execchar(char *command, char **envp);
 char	**argv_generator(char *command);
-int     argv_generator_ap(char *command, char lim, t_list **argv_args);
+void	argv_generator_ap(char *command, t_list **argv_args);
 
 
 #endif

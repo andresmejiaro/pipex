@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/13 23:37:17 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/14 19:03:58 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ int	main(int argc, char **argv, char**envp)
 	int		ct;
 		
 	if (argc < 5)
-		return (1);
+		exit (EXIT_FAILURE);
 	pipes = pipe_generator(argc - 2);
 	if (pipes == 0 )
-		return (2);
+		exit (EXIT_FAILURE);
 	pipes[0][0] = open(argv[1], O_RDONLY);
 	pipes[argc - 3][1] = open(argv[argc -1], O_WRONLY | O_CREAT | O_TRUNC , 0644);
 	if (pipes[0][0] == -1 || pipes[argc - 3][1] == -1)
-		return (2);
+		exit (EXIT_FAILURE);
 	ct = 2;
 	while (ct <= argc - 1)
 	{
@@ -80,5 +80,6 @@ int	main(int argc, char **argv, char**envp)
 		close(pipes[ct-2][0]);
 		ct++;
 	}
-	return (waitpid(id,&ct,0), ct);
+	waitpid(id,&ct,0);
+	return (ct);
 }
