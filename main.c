@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/14 19:03:58 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/15 23:05:25 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ int	**pipe_generator(int npipes)
 int	main(int argc, char **argv, char**envp)
 {
 	int		id;
-	int		**pipes;
+	int		**pip;
 	int		ct;
-		
+
 	if (argc < 5)
 		exit (EXIT_FAILURE);
-	pipes = pipe_generator(argc - 2);
-	if (pipes == 0 )
+	pip = pipe_generator(argc - 2);
+	if (pip == 0)
 		exit (EXIT_FAILURE);
-	pipes[0][0] = open(argv[1], O_RDONLY);
-	pipes[argc - 3][1] = open(argv[argc -1], O_WRONLY | O_CREAT | O_TRUNC , 0644);
-	if (pipes[0][0] == -1 || pipes[argc - 3][1] == -1)
+	pip[0][0] = open(argv[1], O_RDONLY);
+	pip[argc - 3][1] = open(argv[argc -1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pip[0][0] == -1 || pip[argc - 3][1] == -1)
 		exit (EXIT_FAILURE);
 	ct = 2;
 	while (ct <= argc - 1)
@@ -75,11 +75,10 @@ int	main(int argc, char **argv, char**envp)
 		if (ct < argc - 1)
 			id = fork();
 		if (id == 0)
-			return(kid_stuff(argv[ct],pipes[ct - 2], pipes [ct -1], envp));
-		close(pipes[ct-2][1]);
-		close(pipes[ct-2][0]);
+			return (kid_stuff(argv[ct], pip[ct - 2], pip [ct -1], envp));
+		close(pip[ct - 2][1]);
+		close(pip[ct - 2][0]);
 		ct++;
 	}
-	waitpid(id,&ct,0);
-	return (ct);
+	return (waitpid(id, &ct, 0), ct);
 }

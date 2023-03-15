@@ -6,7 +6,7 @@
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:37:04 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/14 16:31:34 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/15 23:05:46 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ int	ft_execchar(char *command, char **envp)
 	new_argv = argv_generator(command);
 	if (execve(path_to_exec, new_argv, envp) == -1)
 		exit (EXIT_FAILURE);
-	return(0);
+	return (0);
 }
