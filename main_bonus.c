@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amejia <amejia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 23:59:25 by amejia            #+#    #+#             */
-/*   Updated: 2023/03/17 19:09:37 by amejia           ###   ########.fr       */
+/*   Updated: 2023/03/16 17:49:43 by amejia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 int	kid_stuff(char *command, int *pipein, int *pipeout, char **envp)
 {
@@ -56,31 +56,29 @@ int	**pipe_generator(int npipes)
 
 int	main(int argc, char **argv, char**envp)
 {
-	int		id[2];
+	int		id;
 	int		**pip;
 	int		ct;
 
-	if (argc != 5)
+	if (argc < 5)
 		exit (EXIT_FAILURE);
 	pip = pipe_generator(argc - 2);
 	if (pip == 0)
 		exit (EXIT_FAILURE);
 	pip[0][0] = open(argv[1], O_RDONLY);
 	pip[argc - 3][1] = open(argv[argc -1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pip[0][0] == -1 || pip[argc - 3][1] == -1)
+		exit (EXIT_FAILURE);
 	ct = 2;
 	while (ct <= argc - 1)
 	{
 		if (ct < argc - 1)
-			id[ct - 2] = fork();
-		if (id[ct - 2] == 0)
+			id = fork();
+		if (id == 0)
 			return (kid_stuff(argv[ct], pip[ct - 2], pip [ct -1], envp));
 		close(pip[ct - 2][1]);
 		close(pip[ct - 2][0]);
 		ct++;
 	}
-	waitpid(id[0],&ct, 0);
-	return (waitpid(id[1], &ct, 0), ct);
+	return (waitpid(id, &ct, 0), ct);
 }
-
-	// if (pip[0][0] == -1 || pip[argc - 3][1] == -1)
-	// 	exit (EXIT_FAILURE);
